@@ -5,6 +5,8 @@ clc;
 close all;
 clear all;
 
+graphics_toolkit("fltk");
+
 addpath('gold');
 addpath('hadamard');
 
@@ -39,7 +41,7 @@ for p = 1:1:pSNsize
     d=data;
     %
     sk=qaskenco(d,M);%модуляция QASK кодом Грея
-    
+
     %Готовим матрицу data к OFDM, Используем технологию ACO-OFDM;
     iDF=FM/4-1; datOFDM=[]; % iDF - число поднесущих
     Jdat = 0; bdf = [];
@@ -91,7 +93,7 @@ for p = 1:1:pSNsize
     dyCap=qaskdeco(ysr,M);
     %
     dyCap_bits = de2bi(dyCap, k, 'left-msb'); dyCap_bits = dyCap_bits(1:length(d), :);
-    
+
     symE = 0;
     for yi =1:length(d)
         if (d(yi)!=dyCap(yi))
@@ -99,11 +101,11 @@ for p = 1:1:pSNsize
         end;
     end;
     SymErrors(p) = symE;
-    
+
     bitmis = (dyCap_bits != bit_matrix');
     bitE = sum(bitmis(:));
     BitErrors(p) = bitE;
-    
+
 endfor
 
 dlmwrite('symerrors.csv', SymErrors(1, :)./nSym, '-append', 'delimiter', ';');

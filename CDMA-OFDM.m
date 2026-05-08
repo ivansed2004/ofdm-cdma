@@ -4,6 +4,8 @@ clc;
 close all;
 clear all;
 
+graphics_toolkit("fltk");
+
 addpath('gold');
 addpath('hadamard');
 
@@ -13,7 +15,7 @@ M=4; % число символов в канале ПД
 k=log2(M); % число бит на один символ
 nSym = ceil(nBit / k); %число символов данных
 %
-FM=64;%задать порядок OFDM символа и кол-во поднесущих=(FM/4 -1)Я
+FM=64;%задать порядок OFDM символа и кол-во поднесущих=(FM/4 -1)
 kF=log2(FM);
 
 % формирование исходной битовой последовательности данных
@@ -67,14 +69,14 @@ for i = 1:1:channels
     end
 end
 
-fwt_output = zeros(channels, sf, dd); % тензор с коэффициетами БПУ
+ifwt_output = zeros(channels, sf, dd); % тензор с коэффициетами БПУ
 for i = 1:1:dd
     sl = squeeze(spr_ch_data(:, i, :));
-    fwt_output(:, :, i) = (walsh_basis * sl);
+    ifwt_output(:, :, i) = (walsh_basis * sl) / channels;
 end
 
 % набор вещественных данных
-real_d = fwt_output(:).';
+real_d = ifwt_output(:).';
 % набор комплексных данных (преобразование Гильберта)
 d = hilbert(real_d);
 
@@ -135,10 +137,10 @@ for p = 1:1:pSNsize
   % коэффициенты БПУ + белый гауссов шум
   fwt_output_awgn = reshape( dyCap, [channels, sf, dd] );
   % обратное БПУ с зашумленными коэффициентами (значения чипов + белый гауссов шум)
-  ifwt_output_awgn = zeros(channels, dd, sf);
+  fwt_output_awgn = zeros(channels, dd, sf);
   for i = 1:1:dd
       sl = fwt_output_awgn(:, :, i);
-      ifwt_output_awgn(:, i, :) = (walsh_basis * sl) / channels;
+      fwt_output_awgn(:, i, :) = (walsh_basis * sl) / channels;
   endfor
 
   % расчет ошибок
@@ -149,7 +151,7 @@ for p = 1:1:pSNsize
           sym = 0;
           R = 0;
           for m = 1:1:M
-              Rs = rec_corr( squeeze(spreading_code(i, m, :)), squeeze(ifwt_output_awgn(i, j, :)) );
+              Rs = rec_corr( squeeze(spreading_code(i, m, :)), squeeze(fwt_output_awgn(i, j, :)) );
               if (Rs > R)
                   R = Rs;
                   sym = m-1;
