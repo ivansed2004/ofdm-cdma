@@ -31,20 +31,21 @@ function [dec_sequence] = decimation( m_sequence, d )
 endfunction
 
 function [m_sequence] = lfsr_sequence( init, polynomial )
-    m = length(init);
-    register = init;
-    m_sequence = zeros(1, (2^m - 1));
-    N = length(register);
-
-    for i = 1:(2^m - 1)
-        output_bit = register(N);
-        m_sequence(i) = output_bit;
-
+    n = length(init);  # степень полинома
+    reg = init;        # текущее состояние регистра
+    # Инициализация выходной последовательности
+    m_sequence = zeros(1, 2^n-1);
+    for i = 1:(2^n-1)
+        # Выходной бит: крайний правый элемент (младший бит)
+        m_sequence(i) = reg(end);
+        # Вычисление обратной связи: XOR всех отводов
         feedback = 0;
-        for t = polynomial
-            feedback = xor(feedback, register(t));
-        endfor
-
-        register = [feedback, register(1:N-1)];
-    endfor
+        for k = 1:length(polynomial)
+            # polynomial содержит номера ячеек, участвующих в обратной связи
+            # Отсчет ведется слева направо: 1 - крайний левый регистр
+            feedback = xor(feedback, reg(polynomial(k)));
+        end
+        # Сдвиг регистра вправо, новый бит помещается слева
+        reg = [feedback, reg(1:end-1)];
+    end
 endfunction
