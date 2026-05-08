@@ -30,10 +30,10 @@ walsh_basis = hadamard_code(channels);
 % спецификация кодов Голда
 ##spec = {
 ##  {4, [1], 7};
-##  {5, [4, 3, 2], 9};
-##  {6, [5, 2, 1], 11}
-##  {7, [3, 2, 1], 13}
-##  {8, [6, 5, 1], 33}
+##  {5, [2], 9};
+##  {6, [1], 11}
+##  {7, [1], 13}
+##  {8, [4, 3, 1], 33}
 ##};
 
 pSN = -25:1:0; # SNR (dB)
@@ -44,7 +44,7 @@ SymErrors = zeros(1, pSNsize);
 BitErrors = zeros(1, pSNsize);
 
 %% Generation Matrix (G)
-G = gold_code(7, [3, 2, 1], 13);
+G = gold_code(4, [1], 7);
 
 sf = size(G)(2); % коэффициент расширения (DSSS) / число чипов на символ
 cbr = sf / k; % chip to bit ratio (сколько в среднем чипов приходится на бит в пределах одного символа)
@@ -53,7 +53,7 @@ nChip = nSym*sf; % общее число чипов, передаваемых в
 %-----------------Transmitter (CDMA-OFDM)--------------------
 spreading_code = reshape( G(1:M*channels, :), [channels, M, sf] ); % расширяющие коды
 spreading_code = 1 - 2*spreading_code;
-  
+
 dd = ceil(length(data) / channels);
 ch_data = [ data, zeros(1, channels*dd-length(data)) ]; % заполнение нулями для в случае нехватки символов данных
 ch_data = reshape( ch_data, dd, channels ).'; % исходные данные, сгруппированные по каналам
@@ -131,7 +131,7 @@ for p = 1:1:pSNsize
   ybdf1=reshape(yZRskF,1,iDF*yiRDF(2));
   ysr=ybdf1;
   dyCap = real(ysr); dyCap = dyCap(1:length(dyCap)-padding);
-  
+
   % коэффициенты БПУ + белый гауссов шум
   fwt_output_awgn = reshape( dyCap, [channels, sf, dd] );
   % обратное БПУ с зашумленными коэффициентами (значения чипов + белый гауссов шум)
@@ -140,7 +140,7 @@ for p = 1:1:pSNsize
       sl = fwt_output_awgn(:, :, i);
       ifwt_output_awgn(:, i, :) = (walsh_basis * sl) / channels;
   endfor
-  
+
   % расчет ошибок
   symE = 0;
   bitE = 0;
