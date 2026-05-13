@@ -2,23 +2,41 @@ clc;
 close all;
 clear all;
 
+graphics_toolkit("fltk");
+
 addpath('gold');
 
-init = [0, 0, 0, 1];
-m_seq = lfsr_sequence(init, [4, 3]);
-m_seq_dec = decimation(m_seq, 7);
+m = 7; poly = [7, 1]; d = 13;
+G = gold_code(m, poly, d);
 
-[R, lag, ccfmax] = ccf( m_seq, m_seq_dec );
-figure();
-plot(lag, R, "linewidth", 3);
-hold on;
-xlims = xlim();
-line(xlims, [ccfmax, ccfmax], 'linewidth', 2, 'Color', 'magenta', 'LineStyle', '-.');
-hold off;
-title( 'ACF/CCF' );
-xlabel('Lag time');
-ylabel('Estimate');
-set(gca, 'FontSize', 20);
+ACF = cell(4, 1);  # Для хранения результатов АКФ
+CCF = cell(12, 1); # Для хранения результатов ВКФ
+
+k = 1;
+for i = 1:1:size(G)(1)
+  for j = 1:1:size(G)(1)
+    if (i == j)
+      [R, lag] = acf(G(i, :));
+      ACF{i} = R;
+    else
+      [R, lag, ccfmax] = ccf(G(i, :), G(j, :));
+      CCF{k} = R;
+      k = k + 1;
+    endif
+  endfor
+endfor
+
+ACF_matrix = cell2mat(ACF);
+CCF_matrix = cell2mat(CCF);
+
+fig1 = figure();
+plot( lag, ACF_matrix, 'linewidth', 2 );
+xlabel('Lag'); ylabel('Estimate'); title('ACF');
 grid on;
+set(gca, 'FontSize', 25);
 
-ccfmax * (2^(length(init))-1)
+fig2 = figure();
+plot( lag, CCF_matrix, 'linewidth', 2 );
+xlabel('Lag'); ylabel('Estimate'); title('CCF');
+grid on;
+set(gca, 'FontSize', 25);
