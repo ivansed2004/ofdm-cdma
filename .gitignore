@@ -1,2 +1,4 @@
 .git/
 git.sh
+.gitignore
+octave-workspace
