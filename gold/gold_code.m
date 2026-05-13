@@ -1,5 +1,5 @@
 function [G] = gold_code( n, polynomial, d );
-    init = zeros(1, n); init(1) = 1;
+    init = zeros(1, n); init(end) = 1;
     ms1 = lfsr_sequence( init, polynomial );
     ms2 = decimation( ms1, d );
     L = length( ms1 );
