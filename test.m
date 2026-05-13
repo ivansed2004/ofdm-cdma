@@ -4,9 +4,9 @@ clear all;
 
 addpath('gold');
 
-init = [0, 1, 1];
-m_seq = lfsr_sequence(init, [1]);
-m_seq_dec = decimation(m_seq, 3);
+init = [0, 0, 0, 1];
+m_seq = lfsr_sequence(init, [4, 3]);
+m_seq_dec = decimation(m_seq, 7);
 
 [R, lag, ccfmax] = ccf( m_seq, m_seq_dec );
 figure();

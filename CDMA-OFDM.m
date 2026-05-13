@@ -46,7 +46,7 @@ SymErrors = zeros(1, pSNsize);
 BitErrors = zeros(1, pSNsize);
 
 %% Generation Matrix (G)
-G = gold_code(4, [1], 7);
+G = gold_code(8, [4, 3, 1], 33);
 
 sf = size(G)(2); % коэффициент расширения (DSSS) / число чипов на символ
 cbr = sf / k; % chip to bit ratio (сколько в среднем чипов приходится на бит в пределах одного символа)
@@ -69,7 +69,7 @@ for i = 1:1:channels
     end
 end
 
-ifwt_output = zeros(channels, sf, dd); % тензор с коэффициетами БПУ
+ifwt_output = zeros(channels, sf, dd); % тензор с коэффициетами ОБПУ
 for i = 1:1:dd
     sl = squeeze(spr_ch_data(:, i, :));
     ifwt_output(:, :, i) = (walsh_basis * sl) / channels;
@@ -135,23 +135,24 @@ for p = 1:1:pSNsize
   dyCap = real(ysr); dyCap = dyCap(1:length(dyCap)-padding);
 
   % коэффициенты БПУ + белый гауссов шум
-  fwt_output_awgn = reshape( dyCap, [channels, sf, dd] );
+  ifwt_output_awgn = reshape( dyCap, [channels, sf, dd] );
   % обратное БПУ с зашумленными коэффициентами (значения чипов + белый гауссов шум)
-  fwt_output_awgn = zeros(channels, dd, sf);
+  fwt_output_awgn = zeros(channels, sf, dd);
   for i = 1:1:dd
-      sl = fwt_output_awgn(:, :, i);
-      fwt_output_awgn(:, i, :) = (walsh_basis * sl) / channels;
+      sl = squeeze(ifwt_output_awgn(:, :, i));
+      fwt_output_awgn(:, :, i) = (walsh_basis * sl);
   endfor
 
-  % расчет ошибок
+  % расчет ошибок (оценка наибольшего правдоподобия)
   symE = 0;
   bitE = 0;
   for i = 1:1:channels
       for j = 1:1:dd
           sym = 0;
+          true_sym = 0;
           R = 0;
           for m = 1:1:M
-              Rs = rec_corr( squeeze(spreading_code(i, m, :)), squeeze(fwt_output_awgn(i, j, :)) );
+              Rs = rec_corr( squeeze(spreading_code(i, m, :)), squeeze(fwt_output_awgn(i, :, j)) );
               if (Rs > R)
                   R = Rs;
                   sym = m-1;
