@@ -1,4 +1,5 @@
-function [R, lag, ccfmax] = ccf( s1, s2 )
+% Вычисление ВКФ для заданных последовательностей s1 и s2 одинаковой длины
+function [R, lag] = ccf( s1, s2 )
     ls1 = length(s1);
     ls2 = length(s2);
     lag = -ls2:1:ls1;
@@ -13,14 +14,6 @@ function [R, lag, ccfmax] = ccf( s1, s2 )
                 Rs = Rs + s1(i+1)*s2(i-l+1);
             endif
         endfor
-        R(j) = Rs / ls1;
+        R(j) = Rs;
     endfor
-    
-    ccfmax = 0;
-    for k = 1:length(R)
-        if ( R(k) > ccfmax )
-            ccfmax = R(k);
-        endif
-    endfor
-    
 endfunction
