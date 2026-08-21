@@ -1,10 +1,32 @@
 # **Разработка и моделирование каналов CDMA систем передачи данных**
 
 ## Глоссарий
-1. CDMA -> Code Division Multiple Access
-2. DSSS -> Direct Sequence Spread Spectrum
-3. OFDM -> Orthogonal Frequency Division Multiplexing 
+1. ACO-OFDM -> Asymmetrically Clipped Optical Orthogonal Frequency Division Multiplexing
+2. BER -> Bit error rate
+3. CDMA -> Code Division Multiple Access
+4. DCO-OFDM -> Direct Current Offset Orthogonal Frequency Division Multiplexing
+5. DSSS -> Direct Sequence Spread Spectrum
+6. OFDM -> Orthogonal Frequency Division Multiplexing
+7. SNR -> Signal-to-Noise Ratio
+8. АКФ -> Автокорреляционная функция
+9. ВКФ -> Взаимная корреляционная функция
+
+## Файловая структура проекта
+1. **acf-ccf**: Полученныые результаты расчета АКФ и ВКФ для каждой из длин кода Голда (31, 63, 127);
+2. **barker**: Генерация канонических и композитных кодов Баркера;
+3. **gold**: Генерация ансамблей кодов Голда;
+4. **hadamard**: Генерация кодов Уолша по матрице Адамара;
+5. **CDMA-OFDM.m**: Основной файл для генерации графиков BER(SNR) для системы передачи с двойным CDMA-кодированием на ACO-OFDM-поднесущих;
+6. **OFDM-QPSK.m**: Дополнительный файл для генерации графиков BER(SNR);
+7. **acf.m/ccf.m**: Файлы, реализующие расчет АКФ и ВКФ для указанных последовательностей Голда;
+8. **biterrors.csv/symerrors.csv**: Результаты вычисления BER/SER для заданного SNR;
+9. **corr-analysis.m**: Расчет АКФ и ВКФ для всего ансамбля кодов Голда и сохранение результатов;
+10. **main.m**: Основной файл для запуска всей симуляции канала;
+11. **rec_corr**: Реализация корреляционного приема;
 
 ## Структурная схема передатчика CDMA-OFDM
 
 ## Структурная схема приемника CDMA-OFDM
+
+## DCO-OFDM vs ACO-OFDM
+Высокий пик-фактор в DCO-OFDM создает большую по величине постоянную составляющую, что вынуждает повышать мощность сигнала. При этом эта составляющая не несет дополнительной информации, а просто смещает точки OFDM-фрейма. Преимущество использования ACO-OFDM заключается в отсутствии постоянной составляющей, а также ограничении сигнала только положительной полуплоскостью, обнуляя четные поднесущие и сокращая общую энергию сигнала в два раза.
