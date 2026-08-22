@@ -1,20 +1,21 @@
 # **Разработка и моделирование каналов CDMA систем передачи данных**
 
 ## Глоссарий
-1. ACO-OFDM -> Asymmetrically Clipped Optical Orthogonal Frequency Division Multiplexing
-2. BER -> Bit error rate
-3. CDMA -> Code Division Multiple Access
-4. DCO-OFDM -> Direct Current Offset Orthogonal Frequency Division Multiplexing
-5. DSSS -> Direct Sequence Spread Spectrum
-6. DSP -> Digital Signal Processor
-7. FDMA -> Frequency Division Multiple Access
-8. FPGA -> Field-Programmable Gate Array
-9. (I)FFT -> (Inverse) Fast Fourier Transform
-10. OFDM -> Orthogonal Frequency Division Multiplexing
-11. SNR -> Signal-to-Noise Ratio
-12. SSS -> Secondary Synchronization Signal
-13. АКФ -> Автокорреляционная функция
-14. ВКФ -> Взаимная корреляционная функция
+1. 3GPP -> 3rd Generation Partnership Project
+2. ACO-OFDM -> Asymmetrically Clipped Optical Orthogonal Frequency Division Multiplexing
+3. BER -> Bit error rate
+4. CDMA -> Code Division Multiple Access
+5. DCO-OFDM -> Direct Current Offset Orthogonal Frequency Division Multiplexing
+6. DSSS -> Direct Sequence Spread Spectrum
+7. DSP -> Digital Signal Processor
+8. FDMA -> Frequency Division Multiple Access
+9. FPGA -> Field-Programmable Gate Array
+10. (I)FFT -> (Inverse) Fast Fourier Transform
+11. OFDM -> Orthogonal Frequency Division Multiplexing
+12. SNR -> Signal-to-Noise Ratio
+13. SSS -> Secondary Synchronization Signal
+14. АКФ -> Автокорреляционная функция
+15. ВКФ -> Взаимная корреляционная функция
 
 ## Файловая структура проекта
 1. **acf-ccf**: Полученные результаты расчета АКФ и ВКФ для каждой из длин кода Голда (31, 63, 127);
