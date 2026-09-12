@@ -3,7 +3,7 @@
 ## Глоссарий
 1. 3GPP -> 3rd Generation Partnership Project
 2. ACO-OFDM -> Asymmetrically Clipped Optical Orthogonal Frequency Division Multiplexing
-3. ASIC -> Application-Specific Integrated Service
+3. ASIC -> Application-Specific Integrated Circuit
 4. BER -> Bit error rate
 5. CDMA -> Code Division Multiple Access
 6. DCO-OFDM -> Direct Current Offset Orthogonal Frequency Division Multiplexing
